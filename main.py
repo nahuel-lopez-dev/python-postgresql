@@ -22,11 +22,17 @@ def create_user(connect, cursor):
     cursor.execute(query, values)
     connect.commit()
     
-    print('Usuario creado')
+    print('>>> Usuario creado')
 
 # Read
 def list_users(connect, cursor):
     """ B) Listar Usuarios"""
+    query = 'SELECT id, username, email FROM users'
+    cursor.execute(query)
+    
+    for id, username, email in cursor.fetchall():
+        print(f'{id} - {username} - {email}')
+    
     print('Listado de Usuarios')
 
 # Update
@@ -56,8 +62,8 @@ if __name__ == '__main__':
         
         with connect.cursor() as cursor:
             
-            cursor.execute(DROP_USERS_TABLE)
-            cursor.execute(USERS_TABLE)
+            # cursor.execute(DROP_USERS_TABLE)
+            # cursor.execute(USERS_TABLE)
             
             connect.commit()
             
