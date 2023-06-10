@@ -22,7 +22,7 @@ def create_user(connect, cursor):
     cursor.execute(query, values)
     connect.commit()
     
-    print('>>> Usuario creado')
+    print('>>> Usuario creado exitosamente!')
 
 # Read
 def list_users(connect, cursor):
@@ -33,12 +33,32 @@ def list_users(connect, cursor):
     for id, username, email in cursor.fetchall():
         print(f'{id} - {username} - {email}')
     
-    print('Listado de Usuarios')
+    print('>>> Listado de Usuarios')
 
 # Update
 def update_user(connect, cursor):
     """ C) Actualizar Usuario"""
-    print('Usuario actualizado')
+    id = input('Ingresa el id del usuario a actualizar:')
+    
+    query = 'SELECT id FROM users WHERE id = %s'
+    cursor.execute(query, (id,))
+    
+    user = cursor.fetchone() #None
+    
+    if user:
+        
+        username = input('Ingresa un nuevo username:')
+        email = input('Ingresa un nuevo email:')
+        
+        query = 'UPDATE users SET username = %s, email = %s WHERE id = %s'
+        values = (username, email, id)
+        
+        cursor.execute(query, values)
+        connect.commit()
+        
+        print('>>> Usuario actualizado exitosamente!')
+    else:
+        print('No existe un usuario con ese id, intenta de nuevo.')    
 
 # Delete
 def delete_user(connect, cursor):
