@@ -1,3 +1,4 @@
+import os
 import psycopg2
 
 DROP_USERS_TABLE = 'DROP TABLE IF EXIST users'
@@ -10,7 +11,24 @@ USERS_TABLE = """
 """
 ##### CRUD #####
 
+# Decorador
+def system_clear(function):
+    
+    def wrapper(connect, cursor):
+        
+        os.system('cls')
+        
+        function(connect, cursor)
+        
+        input('')
+        
+        os.system('cls')
+        
+    wrapper.__doc__ = function.__doc__    
+    return wrapper
+
 # Create
+@system_clear
 def create_user(connect, cursor):
     """ A) Crear Usuario"""
     username = input('Ingresa un username:')
@@ -25,6 +43,7 @@ def create_user(connect, cursor):
     print('>>> Usuario creado exitosamente!')
 
 # Read
+@system_clear
 def list_users(connect, cursor):
     """ B) Listar Usuarios"""
     query = 'SELECT id, username, email FROM users'
@@ -56,6 +75,7 @@ def user_exist(function):
     return wrapper    
         
 # Update
+@system_clear
 @user_exist
 def update_user(id, connect, cursor):
     """ C) Actualizar Usuario"""
@@ -72,6 +92,7 @@ def update_user(id, connect, cursor):
     print('>>> Usuario actualizado exitosamente!')
     
 # Delete
+@system_clear
 @user_exist
 def delete_user(id, connect, cursor):
     """ D) Eliminar Usuario"""
